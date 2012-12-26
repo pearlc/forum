@@ -5,5 +5,7 @@
  */
 
 echo 'hi guys';
+echo 'cool';
+
 phpinfo();
 ?>
