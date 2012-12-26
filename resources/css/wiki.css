@@ -1,0 +1,68 @@
+@CHARSET "UTF-8";
+
+
+.paragraph {
+	margin:0px 0px 40px 0px;
+	line-height:22px;
+	overflow:auto;
+}
+
+.paragraph header {
+	height:40px;
+	margin:0px 0px 14px 0px;
+	border-bottom: 1px solid #E6E3E4;
+}
+
+.paragraph header.head-paragraph-header {
+	height:54px;
+}
+
+.paragraph header h3,
+.paragraph header h4 {
+	float:left;
+}
+
+.paragraph header div.edit-buttons {
+	float:right;
+}
+
+.paragraph p {
+	margin:0px;
+}
+
+div.simg-right {
+	float:right;
+	margin:15px 0px 0px 15px;
+}
+
+div.simg-left {
+	float:left;
+	margin:15px 15px 0px 0px;
+}
+
+div.dimg {
+	width:100%;
+	margin: 0 auto;
+	overflow:auto;
+}
+
+div.dimg div.img1 {
+	float:left;
+}
+
+div.dimg div.img2 {
+	float:right;
+}
+
+table.edit-table {
+	border:1px solid ;
+}
+
+table.edit-table tr td {
+	border:1px solid;
+}
+
+blockquote p.caption {
+	font-size:12px;
+	overflow:auto;
+}
