@@ -3,5 +3,8 @@
                 <p></p>
             </div>
         </div>
+        <!--
+        {elapsed_time}
+        -->
     </body>
 </html>

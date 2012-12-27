@@ -7,6 +7,6 @@
         </label>
         <button type="submit" class="btn btn-mini">Submit</button>
         <label><a href="#">비밀번호 찾기</a></label>
-        <label><a href="signup">회원가입</a></label>
+        <label><a href="<?=$this->config->config['signup_url']?>">회원가입</a></label>
     </fieldset>
 </form>

@@ -1,28 +1,28 @@
-<?php $this->load->view('common_template/header.php'); ?>
+<?php $this->load->view('templates/header.php', $header); ?>
 
 <div class="container">
 
     <div class="span4 offset4">
         <h2>가입</h2>
-        <form class="">
+        <form name="signup" action="<?=$this->config->config['create_account_url']?>" method="POST" >
             <div class="control-group">
                 <label class="control-label" for="inputEmail">이메일</label>
                 <div class="controls">
-                    <input type="text" id="inputEmail" placeholder="abc@example.com">
+                    <input name="email" type="text" id="inputEmail" placeholder="abc@example.com">
                     ㅋ
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputNickname">별명</label>
                 <div class="controls">
-                    <input type="text" id="inputNickname" placeholder="4~12자의 한글, 영문, 숫자">
+                    <input name="nickname" type="text" id="inputNickname" placeholder="4~12자의 한글, 영문, 숫자">
                     <span>활동시 남겨질 이름</span>
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputPassword">비밀번호</label>
                 <div class="controls">
-                    <input type="password" id="inputPassword" placeholder="6자 이상의 영문, 숫자, 특수문자">
+                    <input name="password" type="password" id="inputPassword" placeholder="6자 이상의 영문, 숫자, 특수문자">
                 </div>
             </div>
             <div class="control-group">
@@ -39,4 +39,4 @@
         </form>
     </div>
 </div>
-<?php $this->load->view('common_template/footer.php');?>
+<?php $this->load->view('templates/footer.php');?>
