@@ -96,7 +96,10 @@ $autoload['config'] = array('my_config');
 |
 */
 
-$autoload['language'] = array();
+$autoload['language'] = array(
+    'test',
+    'common',
+);
 
 
 /*

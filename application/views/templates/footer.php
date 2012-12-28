@@ -1,5 +1,5 @@
             <div class="my-hero-unit">
-                <h1>GTA Forum Footer !!</h1>
+                <h1><?=$this->lang->line('common_label_footer');?></h1>
                 <p></p>
             </div>
         </div>

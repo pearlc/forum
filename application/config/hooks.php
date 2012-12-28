@@ -10,7 +10,13 @@
 |
 */
 
-
+$hook['pre_system'][] = array(
+    'class'    => 'HookingTest',
+    'function' => 'hookingTestMethod',
+    'filename' => 'HookingTest.php',
+    'filepath' => 'hooks',
+    'params'   => array('beer', 'wine', 'snacks')
+);
 
 /* End of file hooks.php */
 /* Location: ./application/config/hooks.php */

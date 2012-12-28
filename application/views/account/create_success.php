@@ -3,17 +3,15 @@
 <div class="container">
 
     <div class="span4 offset4">
-        
         <p>
-            <?=$nickname?> 님 환영합니다
+            <?=$this->lang->line('account_message_welcome_to_prefix');?><?=$nickname?> <?=$this->lang->line('account_message_welcome_to_postfix');?>
         </p>
         <p>
-            이메일 주소 인증을 위한 메일이 <?=$email?>로 발송되었습니다.
+            <?=$this->lang->line('account_message_authentication_mail_sent_prefix');?> <?=$email?><?=$this->lang->line('account_message_authentication_mail_sent_postfix');?>
         </p>
         <p>
-            메일을 확인해서 회원 가입을 완료하세요
+            <?=$this->lang->line('account_message_please_finish_signup_checking_mail');?>
         </p>
-        
     </div>
 </div>
 <?php $this->load->view('templates/footer.php');?>

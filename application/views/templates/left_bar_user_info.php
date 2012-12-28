@@ -1,6 +1,10 @@
 <form name="login" action="#">
     <fieldset>
-        <label><strong>pearlc</strong>님 Hi</label>
-        <label><a href="#">회원정보</a></label>
+        <label>
+            <?=$this->lang->line('common_left_bar_user_name_prefix');?>
+            <strong>pearlc</strong>
+            <?=$this->lang->line('common_left_bar_user_name_postfix');?>
+        </label>
+        <label><a href="#"><?=$this->lang->line('common_link_user_info');?></a></label>
     </fieldset>
 </form>

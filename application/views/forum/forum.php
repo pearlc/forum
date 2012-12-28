@@ -14,9 +14,9 @@ if (!isset($header)) $header = array();
     </div>
 
     <div class="span10">
-        <!-- (s) 포럼 -->
-        포럼입니다.
-        <!-- (e) 포럼 -->
+        <!-- (s) forum -->
+        <?=$this->lang->line('test_this_is_forum')?>
+        <!-- (e) forum -->
     </div>
 </div>
 <?php $this->load->view('templates/footer.php');?>

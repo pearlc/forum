@@ -23,12 +23,12 @@ if (!isset($javascript)) $javascript = array();
             <script src="resources/js/<?=$v?>" type="text/javascript"></script>
         <?}?>
 
-        <title>GTA V forum</title>
+        <title><?=$this->lang->line('common_site_title');?></title>
     </head>
 	
     <body>
         <div class="container">
             <div class="my-hero-unit">
-                    <h1><a href="<?=base_url()?>">GTA V Forum Header !!</a></h1>
+                    <h1><a href="<?=base_url()?>"><?=$this->lang->line('common_label_header');?></a></h1>
                     <p></p>
             </div>
