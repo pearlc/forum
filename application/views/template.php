@@ -1,5 +1,6 @@
 <?php
 $ci = get_instance();
+if ( !isset($data) ) $data = array();
 ?>
 
 <?php $this->load->view('includes/header.php'); ?>
@@ -30,7 +31,7 @@ $ci = get_instance();
     
         <!-- (s) 메인 컨텐츠 -->
         <div class="span12">
-            <?php $this->load->view($main_content); ?>
+            <?php $this->load->view($main_content, $data); ?>
         </div>
         <!-- (e) 메인 컨텐츠 -->
         

@@ -19,7 +19,12 @@ class Account extends CI_Controller {
     function index()
     {
         if ($message = $this->session->flashdata('message')) {
-            $this->load->view('account/general_message', array('message' => $message));
+            
+            $data = array(
+                'main_content'=>'account/general_message',
+                'data'=>array('message'=>$message),
+            );
+            $this->load->view('template', $data);
         } else {
             redirect('/account/login/');
         }
@@ -187,7 +192,7 @@ class Account extends CI_Controller {
         
         $data['main_content'] = '/account/';
         
-        redirect('template', $data);
+        redirect('account/');
     }
     /**
      * Send email message of given type (activate, forgot_password, etc.)
