@@ -2,13 +2,16 @@
 
 // 회원가입
 $lang['account_label_signup'] = '회원가입';
-$lang['account_label_password_confirmation'] = '비밀번호 재입력';
+$lang['account_label_confirm_password'] = '비밀번호 재입력';
 $lang['account_label_signup_button'] = '가입하기';
+$lang['account_label_recaptcha'] = '그림속의 단어를 입력해주세요';
 
-$lang['account_description_email_authentication_mail_sent'] = '인증메일 발송됩니다.';
-$lang['account_description_nickname'] = '활동시 남겨질 이름';
+$lang['account_description_email_authentication_mail_sent'] = '인증메일이 발송됩니다.';
+$lang['account_description_username'] = '활동시 남겨질 이름';
+$lang['account_description_get_another_captcha'] = '새로받기';
 
-$lang['account_placeholder_nickname'] = '4~12자의 한글, 영문, 숫자';
+
+$lang['account_placeholder_username'] = '4~12자의 한글, 영문, 숫자';
 $lang['account_placeholder_password'] = '6자 이상의 영문, 숫자, 특수문자';
 
 

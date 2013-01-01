@@ -7,8 +7,8 @@
 | These details are used in emails sent by authentication library.
 |--------------------------------------------------------------------------
 */
-$config['website_name'] = 'Your project';
-$config['webmaster_email'] = 'webmaster@your-site.com';
+$config['website_name'] = 'GTA Forum';
+$config['webmaster_email'] = 'fokiproject@gmail.com';
 
 /*
 |--------------------------------------------------------------------------
@@ -39,7 +39,7 @@ $config['phpass_hash_strength'] = 8;
 | 'password_max_length' = Max length of user's password.
 |--------------------------------------------------------------------------
 */
-$config['allow_registration'] = TRUE;
+$config['allow_registration'] = true;
 $config['captcha_registration'] = TRUE;
 $config['email_activation'] = TRUE;
 $config['email_activation_expire'] = 60*60*24*2;

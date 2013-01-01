@@ -1,6 +1,8 @@
 <?php
-if (!isset($css)) $css = array();
-if (!isset($javascript)) $javascript = array();
+$ci = get_instance();
+
+$javascripts = $ci->javascripts();
+$csses = $ci->csses();
 ?>
 <!DOCTYPE html>
 <html>
@@ -13,13 +15,13 @@ if (!isset($javascript)) $javascript = array();
         <link href="resources/css/bootstrap.css" rel="stylesheet" />
         <link href="resources/css/my-custom.css" rel="stylesheet" />
         <link href="resources/css/wiki.css" rel="stylesheet" />
-        <?php foreach($css as $k => $v) { ?>
+        <?php foreach($csses as $k => $v) { ?>
             <link href="resources/css/<?=$v?>" rel="stylesheet" />
         <?}?>
 
         <script src="resources/js/jquery-1.8.3.min.js" type="text/javascript" ></script>
         <script src="resources/js/bootstrap.js" type="text/javascript"></script>
-        <?php foreach($javascript as $k => $v) { ?>
+        <?php foreach($javascripts as $k => $v) { ?>
             <script src="resources/js/<?=$v?>" type="text/javascript"></script>
         <?}?>
 

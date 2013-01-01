@@ -1,0 +1,64 @@
+/* 
+    Document   : signup
+    Created on : 2012. 12. 27, Ã¬ÂÂ¤Ã­ÂÂ 4:31:11
+    Author     : pearlc
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+root { 
+    display: block;
+}
+
+div.register {
+    width:500px;
+    margin:10px auto;
+    padding:20px 100px;
+    border:1px solid lightGray;
+    -webkit-border-radius:5px;
+    -moz-border-radius:5px;
+    border-radius:10px;
+}
+
+h2 {
+    margin-bottom:30px;
+}
+
+input[type='text'], input[type='password'] {
+    width:300px;
+}
+
+label {
+    font-weight:bold;
+}
+
+button {
+    margin-left:230px;
+}
+
+div#recaptcha_image {
+    width:300px;
+    height:57px;
+    margin-bottom:10px;
+    border:1px solid #ddd;
+}
+
+div.controls{
+    overflow:visible;
+    position:relative;
+}
+
+div.sidetip {
+    position:absolute;
+    left:320px;
+}
+
+div.control-group {
+    position:relative;
+}
+
+label#refresh_recaptcha {
+    font-weight:normal;
+    position:absolute;
+    left:260px;
+}

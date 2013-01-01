@@ -1,7 +1,11 @@
 <?php
 
-$config['signup_url'] = $this->config['base_url'].'account/signup/';
-$config['create_account_url'] = $this->config['base_url'].'account/create/';
+$config['login_url'] = $this->config['base_url'].'account/login/';
+$config['register_url'] = $this->config['base_url'].'account/register/';
+$config['forgot_password_url'] = $this->config['base_url'].'account/forgot_password';
 
-unset($base_url);
+$config['news_url'] = $this->config['base_url'].'news';
+$config['freeboard_url'] = $this->config['base_url'].'freeboard';
+$config['wiki_url'] = $this->config['base_url'].'wiki';
+
 ?>

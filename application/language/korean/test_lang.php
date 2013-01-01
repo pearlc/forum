@@ -11,5 +11,5 @@ $lang['test_main_text'] = '
             메인 페이지. 메인 페이지. 메인 페이지 이네욤ㅋ 잘봐주셈 ㅇㅋ?';
 
 
-// forum
-$lang['test_this_is_forum'] = '포럼입니다';
+// freeboard
+$lang['test_this_is_freeboard'] = '자유게시판입니다';
