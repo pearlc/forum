@@ -29,13 +29,156 @@ class Account extends CI_Controller {
             redirect('/account/login/');
         }
     }
-
-    public function signup()
-    {
-        $data = array();
-        $data['main_content'] = 'account/signup';
-        
+    
+    function test() {
+        $data['main_content'] = 'account/send_again_form';
         $this->load->view('template', $data);
+    }
+    
+    /**
+     * Login user on the site
+     *
+     * @return void
+     */
+    function login()
+    {
+        if ($this->tank_auth->is_logged_in()) {                 // logged in
+            redirect('');
+
+        } elseif ($this->tank_auth->is_logged_in(FALSE)) {      // logged in, not activated
+            redirect('/account/send_again/');
+
+        } else {
+            
+            $data['login_by_username'] = ($this->config->item('login_by_username', 'tank_auth') AND $this->config->item('use_username', 'tank_auth'));
+            $data['login_by_email'] = $this->config->item('login_by_email', 'tank_auth');
+
+            $this->form_validation->set_rules('email', 'Email', 'trim|required|xss_clean|valid_email');
+            $this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean');
+            $this->form_validation->set_rules('remember', 'Remember me', 'integer');
+
+            // Get login for counting attempts to login
+            if ($this->config->item('login_count_attempts', 'tank_auth') AND ($email = $this->input->post('email'))) {
+                    $email = $this->security->xss_clean($email);
+            } else {
+                    $email = '';
+            }
+
+            $data['use_recaptcha'] = $this->config->item('use_recaptcha', 'tank_auth');
+            if ($this->tank_auth->is_max_login_attempts_exceeded($email)) {
+                if ($data['use_recaptcha'])
+                    $this->form_validation->set_rules('recaptcha_response_field', 'Confirmation Code', 'trim|xss_clean|required|callback__check_recaptcha');
+                else
+                    $this->form_validation->set_rules('captcha', 'Confirmation Code', 'trim|xss_clean|required|callback__check_captcha');
+            }
+            $data['errors'] = array();
+
+            if ($this->form_validation->run()) {                // validation ok
+                if ($this->tank_auth->login(
+                        $this->form_validation->set_value('email'),
+                        $this->form_validation->set_value('password'),
+                        $this->form_validation->set_value('remember'),
+                        $data['login_by_username'],
+                        $data['login_by_email'])) {         // success
+                    redirect('');
+
+                } else {
+                    $errors = $this->tank_auth->get_error_message();
+                    if (isset($errors['banned'])) {     // banned user
+                        $this->_show_message($this->lang->line('auth_message_banned').' '.$errors['banned']);
+
+                    } elseif (isset($errors['not_activated'])) {				// not activated user
+                        redirect('/account/send_again/');
+
+                    } else {													// fail
+                        foreach ($errors as $k => $v) $data['errors'][$k] = $this->lang->line($v);
+                    }
+                }
+            }
+            $data['show_captcha'] = FALSE;
+            if ($this->tank_auth->is_max_login_attempts_exceeded($email)) {
+                $data['show_captcha'] = TRUE;
+                if ($data['use_recaptcha']) {
+                    $data['recaptcha_html'] = $this->_create_recaptcha();
+                } else {
+                    $data['captcha_html'] = $this->_create_captcha();
+                }
+            }
+            $data['data'] = $data;
+            $data['main_content'] = 'account/login_form';
+            $this->load->view('template', $data);
+        }
+    }
+
+    /**
+     * Logout user
+     *
+     * @return void
+     */
+    function logout()
+    {
+        $this->tank_auth->logout();
+
+        $this->_show_message($this->lang->line('auth_message_logged_out'));
+    }
+
+    
+    /**
+     * Send activation email again, to the same or new email address
+     *
+     * @return void
+     */
+    function send_again()
+    {
+        if (!$this->tank_auth->is_logged_in(FALSE)) {   // not logged in or activated
+            redirect('/account/login/');
+
+        } else {
+            
+            // 이 부분을 고쳐야함
+            
+            $user_id = $this->session->userdata('user_id');
+            $user = $this->users->get_user_by_id($user_id, FALSE);
+
+            $data = array(
+                'user_id' => $user_id,
+                'username' => $user->username,
+                'email' => $user->email,
+                'new_email_key'=>$user->new_email_key,
+            );
+            $data['site_name']	= $this->config->item('website_name', 'tank_auth');
+            $data['activation_period'] = $this->config->item('email_activation_expire', 'tank_auth') / 3600;
+            
+            $this->_send_email('activate', $data['email'], $data);
+            
+            
+            /* 원래 있던 코드들
+            
+            $this->form_validation->set_rules('email', 'Email', 'trim|required|xss_clean|valid_email');
+
+            $data['errors'] = array();
+
+            if ($this->form_validation->run()) {        // validation ok
+                if (!is_null($data = $this->tank_auth->change_email($this->form_validation->set_value('email')))) {     // success
+
+                    $data['site_name']	= $this->config->item('website_name', 'tank_auth');
+                    $data['activation_period'] = $this->config->item('email_activation_expire', 'tank_auth') / 3600;
+
+                    $this->_send_email('activate', $data['email'], $data);
+
+                    $this->_show_message(sprintf($this->lang->line('auth_message_activation_email_sent'), $data['email']));
+
+                } else {
+                    $errors = $this->tank_auth->get_error_message();
+                    foreach ($errors as $k => $v) $data['errors'][$k] = $this->lang->line($v);
+                }
+            }
+             * 
+             */
+            $data['data'] = $data;
+            $data['main_content'] = 'account/send_again_form';
+            $this->load->view('template', $data);
+        }
     }
     
     /**
@@ -145,23 +288,6 @@ class Account extends CI_Controller {
         }
     }
     
-    public function create_()
-    {
-        $email = $this->input->post('email');
-        $nickname = $this->input->post('nickname');
-        $password = $this->input->post('password');
-        
-        $data=array();
-        
-        $data['create_result'] = true;
-        $data['nickname'] = $nickname;
-        $data['email'] = $email;
-        
-        $data['main_content'] = 'account/create_success';
-        
-        $this->load->view('template', $data);
-    }
-    
     /**
      * Create reCAPTCHA JS and non-JS HTML to verify user as a human
      *
@@ -230,10 +356,9 @@ class Account extends CI_Controller {
     {
         $method_name = $this->uri->segment(2);
         
-        $javascripts = array();
-        if ($method_name == 'register') {
-            $javascripts[] = 'register.js';
-        }
+        $javascripts = array(
+            'account.js',
+        );
         return $javascripts;
     }
     
@@ -241,10 +366,9 @@ class Account extends CI_Controller {
     {
         $method_name = $this->uri->segment(2);
         
-        $csses = array();
-        if ($method_name == 'register') {
-            $csses[] = 'register.css';
-        }
+        $csses = array(
+            'account.css',
+        );
         return $csses;
     }
 }

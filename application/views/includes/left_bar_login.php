@@ -1,7 +1,7 @@
 <?php
 $login = array(
-    'name'  => 'login',
-    'id'    => 'login',
+    'name'  => 'email',
+    'id'    => 'email',
     'maxlength' => 80,
     'placeholder' => $this->lang->line('common_label_email'),
 );

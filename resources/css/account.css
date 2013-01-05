@@ -1,6 +1,6 @@
 /* 
-    Document   : signup
-    Created on : 2012. 12. 27, Ã¬ÂÂ¤Ã­ÂÂ 4:31:11
+    Document   : account
+    Created on : 2012. 12. 27, 4:31:11
     Author     : pearlc
     Description:
         Purpose of the stylesheet follows.
@@ -10,7 +10,7 @@ root {
     display: block;
 }
 
-div.register {
+div.account_content {
     width:500px;
     margin:10px auto;
     padding:20px 100px;
@@ -30,10 +30,6 @@ input[type='text'], input[type='password'] {
 
 label {
     font-weight:bold;
-}
-
-button {
-    margin-left:230px;
 }
 
 div#recaptcha_image {

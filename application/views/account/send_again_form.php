@@ -1,19 +1,13 @@
-<?php
-$email = array(
-	'name'	=> 'email',
-	'id'	=> 'email',
-	'value'	=> set_value('email'),
-	'maxlength'	=> 80,
-	'size'	=> 30,
-);
-?>
-<?php echo form_open($this->uri->uri_string()); ?>
-<table>
-	<tr>
-		<td><?php echo form_label('Email Address', $email['id']); ?></td>
-		<td><?php echo form_input($email); ?></td>
-		<td style="color: red;"><?php echo form_error($email['name']); ?><?php echo isset($errors[$email['name']])?$errors[$email['name']]:''; ?></td>
-	</tr>
-</table>
-<?php echo form_submit('send', 'Send'); ?>
-<?php echo form_close(); ?>
+<div class="account_content">
+    <h4>인증 메일 재발송</h4>
+    <?php echo form_open($this->uri->uri_string()); ?>
+    <div class="control-group">
+        <label class="control-label" for="email"><?=$this->lang->line('common_label_email');?></label>
+        <div class="controls">
+            <div class="sidetip"><?=$this->lang->line('account_description_email')?></div>
+            <input name="email" type="text" id="email" placeholder="<?=$this->lang->line('account_placeholder_email')?>">
+        </div>
+    </div>
+    <button type="submit" class="btn"><?=$this->lang->line('account_label_resend_button')?></button>
+    <?php echo form_close(); ?>
+</div>

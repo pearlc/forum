@@ -1,4 +1,4 @@
-<div class="register">
+<div class="account_content">
     <h2><?=$this->lang->line('account_label_signup')?></h2>
     <?php echo form_open($this->config->config['register_url']); ?>
         <div class="control-group">
