@@ -1,5 +1,16 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+/**
+ * 계정 관련 컨트롤러
+ *
+ * 로그인/로그아웃/회원가입 등의 컨트롤러
+ *
+ * @package	Foki
+ * @category	Front-controller
+ * @author	Drunken Code
+ * @link	?
+ */
+
 class Account extends CI_Controller {
     
     public function __construct() {
@@ -30,8 +41,16 @@ class Account extends CI_Controller {
         }
     }
     
+    /**
+     * 뷰 테스트 용도 (공개 버전에서는 지워야함)
+     */
     function test() {
-        $data['main_content'] = 'account/send_again_form';
+        $data['main_content'] = 'account/change_password_form';
+        $this->load->view('template', $data);
+    }
+    
+    function mypage() {
+        $data['main_content'] = 'account/mypage';
         $this->load->view('template', $data);
     }
     
@@ -285,6 +304,40 @@ class Account extends CI_Controller {
 
         } else { // fail
             $this->_show_message($this->lang->line('auth_message_activation_failed'));
+        }
+    }
+    
+    /**
+     * Change user password
+     *
+     * @return void
+     */
+    function change_password()
+    {
+        if (!$this->tank_auth->is_logged_in()) {    // not logged in or not activated
+            redirect('/account/login/');
+
+        } else {
+            $this->form_validation->set_rules('old_password', 'Old Password', 'trim|required|xss_clean');
+            $this->form_validation->set_rules('new_password', 'New Password', 'trim|required|xss_clean|min_length['.$this->config->item('password_min_length', 'tank_auth').']|max_length['.$this->config->item('password_max_length', 'tank_auth').']|alpha_dash');
+            $this->form_validation->set_rules('confirm_new_password', 'Confirm new Password', 'trim|required|xss_clean|matches[new_password]');
+
+            $data['errors'] = array();
+
+            if ($this->form_validation->run()) {        // validation ok
+                if ($this->tank_auth->change_password(
+                    $this->form_validation->set_value('old_password'),
+                    $this->form_validation->set_value('new_password'))) {	// success
+                    $this->_show_message($this->lang->line('auth_message_password_changed'));
+
+                } else {														// fail
+                    $errors = $this->tank_auth->get_error_message();
+                    foreach ($errors as $k => $v) $data['errors'][$k] = $this->lang->line($v);
+                }
+            }
+            $data['data'] = $data;
+            $data['main_content'] = 'account/change_password_form';
+            $this->load->view('template', $data);
         }
     }
     

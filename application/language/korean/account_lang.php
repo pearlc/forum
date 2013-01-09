@@ -23,3 +23,8 @@ $lang['account_message_please_finish_signup_checking_mail'] = '메일을 확인�
 
 // activate 이메일 재발송
 $lang['account_label_resend_button'] = '재발송';
+
+// 비밀번호 변경
+$lang['account_label_old_password'] = '현재 비밀번호';
+$lang['account_label_new_password'] = '새 비밀번호';
+$lang['account_label_confirm_new_password'] = '새 비밀번호 재입력';

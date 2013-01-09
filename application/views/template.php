@@ -1,6 +1,7 @@
 <?php
 $ci = get_instance();
 if ( !isset($data) ) $data = array();
+
 ?>
 
 <?php $this->load->view('includes/header.php'); ?>
@@ -13,10 +14,10 @@ if ( !isset($data) ) $data = array();
         <div class="span2">
             <div class="user-info">
                 <?php 
-                if (1) {
-                    $this->load->view('includes/left_bar_login.php');
-                } else {
+                if ( $this->tank_auth->is_logged_in() || $this->tank_auth->is_logged_in(false) ) {
                     $this->load->view('includes/left_bar_user_info.php');
+                } else {
+                    $this->load->view('includes/left_bar_login.php');
                 }
                 ?>
             </div>

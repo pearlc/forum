@@ -19,6 +19,8 @@ $lang['common_label_news'] = '새소식';
 $lang['common_label_freeboard'] = '자유게시판';
 $lang['common_label_wiki'] = '게임정보';
 
+$lang['common_label_ok'] = '확인';
+
 // left bar
 $lang['common_label_auto_login'] = '자동';
 $lang['common_label_login'] = '로그인';
@@ -26,7 +28,8 @@ $lang['common_label_login'] = '로그인';
 $lang['common_left_bar_user_name_prefix'] = '웰컴';
 $lang['common_left_bar_user_name_postfix'] = '님!';
 
-$lang['common_link_user_info'] = '회원정보';
-$lang['common_link_register'] = '회원가입';
-$lang['common_link_forgot_password'] = '비밀번호 찾기';
+$lang['common_label_user_info'] = '회원정보';
+$lang['common_label_register'] = '회원가입';
+$lang['common_label_forgot_password'] = '비밀번호 찾기';
+$lang['common_label_logout'] = '로그아웃';
 
