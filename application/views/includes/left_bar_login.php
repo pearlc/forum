@@ -37,5 +37,6 @@ $submit = array(
         
         <label><a href="<?=$this->config->config['forgot_password_url']?>"><?=$this->lang->line('common_label_forgot_password')?></a></label>
         <label><a href="<?=$this->config->config['register_url']?>"><?=$this->lang->line('common_label_register')?></a></label>
+        <input type="hidden" name="return_url" value="<?=$this->uri->uri_string();?>" />
     </fieldset>
 <?php echo form_close(); ?>

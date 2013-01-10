@@ -99,8 +99,12 @@ class Account extends CI_Controller {
                         $this->form_validation->set_value('remember'),
                         $data['login_by_username'],
                         $data['login_by_email'])) {         // success
+                    
+                    if ( $this->input->post('return_url') ) {
+                        redirect($this->input->post('return_url'));
+                    }
                     redirect('');
-
+                    
                 } else {
                     $errors = $this->tank_auth->get_error_message();
                     if (isset($errors['banned'])) {     // banned user
@@ -137,8 +141,11 @@ class Account extends CI_Controller {
     function logout()
     {
         $this->tank_auth->logout();
-
-        $this->_show_message($this->lang->line('auth_message_logged_out'));
+        
+        if ( $this->input->post('return_url') ) {
+            redirect($this->input->post('return_url'));
+        }
+        redirect('');
     }
     
     
