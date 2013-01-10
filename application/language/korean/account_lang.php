@@ -28,3 +28,11 @@ $lang['account_label_resend_button'] = '재발송';
 $lang['account_label_old_password'] = '현재 비밀번호';
 $lang['account_label_new_password'] = '새 비밀번호';
 $lang['account_label_confirm_new_password'] = '새 비밀번호 재입력';
+
+// 비밀번호 찾기
+$lang['account_label_forgot_password'] = '비밀번호 분실';
+$lang['account_label_forgot_password_submit'] = '전송';
+
+// 비밀번호 재설정
+$lang['account_label_reset_password'] = '비밀번호 재설정';
+$lang['account_label_reset_password_submit'] = '전송';

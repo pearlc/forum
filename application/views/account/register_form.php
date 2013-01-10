@@ -1,6 +1,6 @@
 <div class="account_content">
     <h2><?=$this->lang->line('account_label_signup')?></h2>
-    <?php echo form_open($this->config->config['register_url']); ?>
+    <?php echo form_open($this->uri->uri_string()); ?>
         <div class="control-group">
             <label class="control-label" for="email"><?=$this->lang->line('common_label_email');?></label>
             <div class="controls">

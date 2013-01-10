@@ -1,24 +1,18 @@
-<?php
-$login = array(
-	'name'	=> 'login',
-	'id'	=> 'login',
-	'value' => set_value('login'),
-	'maxlength'	=> 80,
-	'size'	=> 30,
-);
-if ($this->config->item('use_username', 'tank_auth')) {
-	$login_label = 'Email or login';
-} else {
-	$login_label = 'Email';
-}
-?>
-<?php echo form_open($this->uri->uri_string()); ?>
-<table>
-	<tr>
-		<td><?php echo form_label($login_label, $login['id']); ?></td>
-		<td><?php echo form_input($login); ?></td>
-		<td style="color: red;"><?php echo form_error($login['name']); ?><?php echo isset($errors[$login['name']])?$errors[$login['name']]:''; ?></td>
-	</tr>
-</table>
-<?php echo form_submit('reset', 'Get a new password'); ?>
-<?php echo form_close(); ?>
+<div class="account_content">
+    <h2><?=$this->lang->line('account_label_forgot_password')?></h2>
+    <?php echo form_open($this->uri->uri_string()); ?>
+        <div class="control-group">
+            <label class="control-label" for="email"><?=$this->lang->line('common_label_email');?></label>
+            <div class="controls">
+                <div class="sidetip"><?=$this->lang->line('');?></div>
+                <input name="email" type="text" id="email" placeholder="abc@example.com">
+            </div>
+        </div>
+    
+        <div class="control-group">
+            <div class="controls">
+                <button type="submit" class="btn"><?=$this->lang->line('account_label_forgot_password_submit')?></button>
+            </div>
+        </div>
+    <?php echo form_close(); ?>
+</div>

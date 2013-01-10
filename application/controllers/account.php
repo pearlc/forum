@@ -29,7 +29,7 @@ class Account extends CI_Controller {
      */
     function index()
     {
-        if ($message = $this->session->flashdata('message')) {
+        if ($message = $this->session->flashdata('message') ) {
             
             $data = array(
                 'main_content'=>'account/general_message',
@@ -140,65 +140,7 @@ class Account extends CI_Controller {
 
         $this->_show_message($this->lang->line('auth_message_logged_out'));
     }
-
     
-    /**
-     * Send activation email again, to the same or new email address
-     *
-     * @return void
-     */
-    function send_again()
-    {
-        if (!$this->tank_auth->is_logged_in(FALSE)) {   // not logged in or activated
-            redirect('/account/login/');
-
-        } else {
-            
-            // 이 부분을 고쳐야함
-            
-            $user_id = $this->session->userdata('user_id');
-            $user = $this->users->get_user_by_id($user_id, FALSE);
-
-            $data = array(
-                'user_id' => $user_id,
-                'username' => $user->username,
-                'email' => $user->email,
-                'new_email_key'=>$user->new_email_key,
-            );
-            $data['site_name']	= $this->config->item('website_name', 'tank_auth');
-            $data['activation_period'] = $this->config->item('email_activation_expire', 'tank_auth') / 3600;
-            
-            $this->_send_email('activate', $data['email'], $data);
-            
-            
-            /* 원래 있던 코드들
-            
-            $this->form_validation->set_rules('email', 'Email', 'trim|required|xss_clean|valid_email');
-
-            $data['errors'] = array();
-
-            if ($this->form_validation->run()) {        // validation ok
-                if (!is_null($data = $this->tank_auth->change_email($this->form_validation->set_value('email')))) {     // success
-
-                    $data['site_name']	= $this->config->item('website_name', 'tank_auth');
-                    $data['activation_period'] = $this->config->item('email_activation_expire', 'tank_auth') / 3600;
-
-                    $this->_send_email('activate', $data['email'], $data);
-
-                    $this->_show_message(sprintf($this->lang->line('auth_message_activation_email_sent'), $data['email']));
-
-                } else {
-                    $errors = $this->tank_auth->get_error_message();
-                    foreach ($errors as $k => $v) $data['errors'][$k] = $this->lang->line($v);
-                }
-            }
-             * 
-             */
-            $data['data'] = $data;
-            $data['main_content'] = 'account/send_again_form';
-            $this->load->view('template', $data);
-        }
-    }
     
     /**
      * Register user on the site
@@ -285,6 +227,65 @@ class Account extends CI_Controller {
         }
     }
     
+    
+    /**
+     * Send activation email again, to the same or new email address
+     *
+     * @return void
+     */
+    function send_again()
+    {
+        if (!$this->tank_auth->is_logged_in(FALSE)) {   // not logged in or activated
+            redirect('/account/login/');
+
+        } else {
+            
+            // 이 부분을 고쳐야함 : gtaforum에서는 새 메일 주소를 받을 필요가 없이 기존에 메일로만 재발송.
+            
+            $user_id = $this->session->userdata('user_id');
+            $user = $this->users->get_user_by_id($user_id, FALSE);
+
+            $data = array(
+                'user_id' => $user_id,
+                'username' => $user->username,
+                'email' => $user->email,
+                'new_email_key'=>$user->new_email_key,
+            );
+            $data['site_name']	= $this->config->item('website_name', 'tank_auth');
+            $data['activation_period'] = $this->config->item('email_activation_expire', 'tank_auth') / 3600;
+            
+            $this->_send_email('activate', $data['email'], $data);
+            
+            
+            /* 원래 있던 코드들
+            
+            $this->form_validation->set_rules('email', 'Email', 'trim|required|xss_clean|valid_email');
+
+            $data['errors'] = array();
+
+            if ($this->form_validation->run()) {        // validation ok
+                if (!is_null($data = $this->tank_auth->change_email($this->form_validation->set_value('email')))) {     // success
+
+                    $data['site_name']	= $this->config->item('website_name', 'tank_auth');
+                    $data['activation_period'] = $this->config->item('email_activation_expire', 'tank_auth') / 3600;
+
+                    $this->_send_email('activate', $data['email'], $data);
+
+                    $this->_show_message(sprintf($this->lang->line('auth_message_activation_email_sent'), $data['email']));
+
+                } else {
+                    $errors = $this->tank_auth->get_error_message();
+                    foreach ($errors as $k => $v) $data['errors'][$k] = $this->lang->line($v);
+                }
+            }
+             * 
+             */
+            $data['data'] = $data;
+            $data['main_content'] = 'account/send_again_form';
+            $this->load->view('template', $data);
+        }
+    }
+    
     /**
      * Activate user account.
      * User is verified by user_id and authentication code in the URL.
@@ -300,13 +301,116 @@ class Account extends CI_Controller {
         // Activate user
         if ($this->tank_auth->activate_user($user_id, $new_email_key)) {		// success
             $this->tank_auth->logout();
-            $this->_show_message($this->lang->line('auth_message_activation_completed').' '.anchor('/auth/login/', 'Login'));
+            // $this->_show_message($this->lang->line('auth_message_activation_completed').' '.anchor('/account/login/', 'Login'));
+            $message = $this->lang->line('auth_message_activation_completed').' '.anchor('/account/login/', 'Login');
+            
+            // show message 함수의 flashdata 기능이 제대로 동작하지 않음 
+            // 아마도 logout 한 후 다시 세션 데이터를 사용해서 그런것 같음. 
+            // 따라서 직접 뷰를 호출함.
+            
+            $data = array(
+                'main_content'=>'account/general_message',
+                'data'=>array('message'=>$message),
+            );
+            $this->load->view('template', $data);
+            
 
         } else { // fail
             $this->_show_message($this->lang->line('auth_message_activation_failed'));
         }
     }
     
+    
+    /**
+     * Generate reset code (to change password) and send it to user
+     *
+     * @return void
+     */
+    function forgot_password()
+    {
+        if ($this->tank_auth->is_logged_in()) {									// logged in
+            redirect('');
+
+        } elseif ($this->tank_auth->is_logged_in(FALSE)) {						// logged in, not activated
+            redirect('/account/send_again/');
+
+        } else {
+            $this->form_validation->set_rules('email', 'Email or login', 'trim|required|xss_clean');
+
+            $data['errors'] = array();
+
+            if ($this->form_validation->run()) {								// validation ok
+                if (!is_null($data = $this->tank_auth->forgot_password(
+                    $this->form_validation->set_value('email')))) {
+
+                    $data['site_name'] = $this->config->item('website_name', 'tank_auth');
+
+                    // Send email with password activation link
+                    $this->_send_email('forgot_password', $data['email'], $data);
+
+                    $this->_show_message($this->lang->line('auth_message_new_password_sent'));
+
+                } else {
+                    $errors = $this->tank_auth->get_error_message();
+                    foreach ($errors as $k => $v) $data['errors'][$k] = $this->lang->line($v);
+                }
+            }
+            
+            $data['data'] = $data;
+            $data['main_content'] = 'account/forgot_password_form';
+            
+            $this->load->view('template', $data);
+        }
+    }
+    
+    /**
+     * Replace user password (forgotten) with a new one (set by user).
+     * User is verified by user_id and authentication code in the URL.
+     * Can be called by clicking on link in mail.
+     *
+     * @return void
+     */
+    function reset_password()
+    {
+        $user_id = $this->uri->segment(3);
+        $new_pass_key = $this->uri->segment(4);
+
+        $this->form_validation->set_rules('new_password', 'New Password', 'trim|required|xss_clean|min_length['.$this->config->item('password_min_length', 'tank_auth').']|max_length['.$this->config->item('password_max_length', 'tank_auth').']|alpha_dash');
+        $this->form_validation->set_rules('confirm_new_password', 'Confirm new Password', 'trim|required|xss_clean|matches[new_password]');
+
+        $data['errors'] = array();
+
+        if ($this->form_validation->run()) {				// validation ok
+            if (!is_null($data = $this->tank_auth->reset_password(
+                $user_id, $new_pass_key,
+                $this->form_validation->set_value('new_password')))) {	// success
+
+                $data['site_name'] = $this->config->item('website_name', 'tank_auth');
+
+                // Send email with new password
+                $this->_send_email('reset_password', $data['email'], $data);
+
+                $this->_show_message($this->lang->line('auth_message_new_password_activated').' '.anchor('/account/login/', 'Login'));
+
+            } else {														// fail
+                $this->_show_message($this->lang->line('auth_message_new_password_failed'));
+            }
+        } else {
+            // Try to activate user by password key (if not activated yet)
+            if ($this->config->item('email_activation', 'tank_auth')) {
+                $this->tank_auth->activate_user($user_id, $new_pass_key, FALSE);
+            }
+
+            if (!$this->tank_auth->can_reset_password($user_id, $new_pass_key)) {
+                $this->_show_message($this->lang->line('auth_message_new_password_failed'));
+            }
+        }
+        $data['data'] = $data;
+        $data['main_content'] = 'account/reset_password_form';
+        $this->load->view('template', $data);
+    }
+
+
     /**
      * Change user password
      *
@@ -342,23 +446,44 @@ class Account extends CI_Controller {
     }
     
     /**
-     * Create reCAPTCHA JS and non-JS HTML to verify user as a human
-     *
-     * @return	string
+     * Delete user from the site (only when user is logged in)
+     * 현재는 지원하지 않음
+     * 
+     * * 탈퇴시 별도의 탈퇴 회원 테이블 에 복사하는 기능 추가해야함 (가칭 retired_users)
+     *      -> 스키마는 users와 비슷하나, 원래 users 테이블 에서의 id 를 저장하는 컬럼 추가. 필요없는 컬럼들은 삭제
+     * 
+     * @return void
      */
-   function _create_recaptcha()
-   {
-           $this->load->helper('recaptcha');
+    /*
+    function unregister()
+    {
+        if (!$this->tank_auth->is_logged_in()) {			// not logged in or not activated
+            redirect('/account/login/');
 
-           // Add custom theme so we can get only image
-           $options = "<script>var RecaptchaOptions = {theme: 'custom', custom_theme_widget: 'recaptcha_widget'};</script>\n";
+        } else {
+            $this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean');
 
-           // Get reCAPTCHA JS and non-JS HTML
-           $html = recaptcha_get_html($this->config->item('recaptcha_public_key', 'tank_auth'));
+            $data['errors'] = array();
 
-           return $options.$html;
-   }
+            if ($this->form_validation->run()) {                        // validation ok
+                if ($this->tank_auth->delete_user(
+                    $this->form_validation->set_value('password'))) {   // success
+                    $this->_show_message($this->lang->line('auth_message_unregistered'));
 
+                } else {														// fail
+                    $errors = $this->tank_auth->get_error_message();
+                    foreach ($errors as $k => $v) $data['errors'][$k] = $this->lang->line($v);
+                }
+            }
+            $data['data'] = $data;
+            $data['main_content'] = 'account/unregister_form';
+            $this->load->view('template', $data);
+        }
+    }
+     * 
+     */
+    
+    
     /**
      * Show info message
      *
@@ -368,11 +493,12 @@ class Account extends CI_Controller {
     function _show_message($message)
     {
         $this->session->set_flashdata('message', $message);
-        
+
         $data['main_content'] = '/account/';
-        
+
         redirect('account/');
     }
+    
     /**
      * Send email message of given type (activate, forgot_password, etc.)
      *
@@ -381,18 +507,37 @@ class Account extends CI_Controller {
      * @param	array
      * @return	void
      */
-   function _send_email($type, $email, $data)
-   {
-           $this->load->library('email');
-           
-           $this->email->from($this->config->item('webmaster_email', 'tank_auth'), $this->config->item('website_name', 'tank_auth'));
-           $this->email->reply_to($this->config->item('webmaster_email', 'tank_auth'), $this->config->item('website_name', 'tank_auth'));
-           $this->email->to($email);
-           $this->email->subject(sprintf($this->lang->line('auth_subject_'.$type), $this->config->item('website_name', 'tank_auth')));
-           $this->email->message($this->load->view('email/'.$type.'-html', $data, TRUE));
-           $this->email->set_alt_message($this->load->view('email/'.$type.'-txt', $data, TRUE));
-           $this->email->send();
-   }
+    function _send_email($type, $email, $data)
+    {
+        $this->load->library('email');
+
+        $this->email->from($this->config->item('webmaster_email', 'tank_auth'), $this->config->item('website_name', 'tank_auth'));
+        $this->email->reply_to($this->config->item('webmaster_email', 'tank_auth'), $this->config->item('website_name', 'tank_auth'));
+        $this->email->to($email);
+        $this->email->subject(sprintf($this->lang->line('auth_subject_'.$type), $this->config->item('website_name', 'tank_auth')));
+        $this->email->message($this->load->view('email/'.$type.'-html', $data, TRUE));
+        $this->email->set_alt_message($this->load->view('email/'.$type.'-txt', $data, TRUE));
+        $this->email->send();
+    }
+    
+    /**
+     * Create reCAPTCHA JS and non-JS HTML to verify user as a human
+     *
+     * @return	string
+     */
+    function _create_recaptcha()
+    {
+            $this->load->helper('recaptcha');
+
+            // Add custom theme so we can get only image
+            $options = "<script>var RecaptchaOptions = {theme: 'custom', custom_theme_widget: 'recaptcha_widget'};</script>\n";
+
+            // Get reCAPTCHA JS and non-JS HTML
+            $html = recaptcha_get_html($this->config->item('recaptcha_public_key', 'tank_auth'));
+
+            return $options.$html;
+    }
+
     
     // 이하 CI_ViewDelegate 메서드
     public function show_sidebar()

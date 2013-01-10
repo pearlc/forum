@@ -3,7 +3,7 @@
     <div class="control-group">
         <label class="control-label" for="email"><?=$this->lang->line('common_label_email');?></label>
         <div class="controls">
-            <div class="sidetip"><?=$this->lang->line('account_description_email_authentication_mail_sent');?></div>
+            <div class="sidetip"><?=$this->lang->line('');?></div>
             <input name="email" type="text" id="email" placeholder="abc@example.com">
         </div>
     </div>
