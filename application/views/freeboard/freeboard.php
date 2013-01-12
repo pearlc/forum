@@ -37,7 +37,7 @@
     </thead>
     <tbody>
     <?php
-    foreach($rows as $row) {
+    if ( count($rows) ) foreach($rows as $row) {
         ?>
         <tr>
             <td><?=$row->id?></td>
@@ -53,22 +53,60 @@
         </tr>
         <?
     }
-    ?>
-        
+    ?>   
     </tbody>
 </table>
+
+<?php
+if ( count($rows)==0 ) {
+    ?>
+    <div class="no_articles">
+        게시글이 없습니다
+    </div>
+<?
+}
+?>
+
 
 <div class="bbs_menu">
     <div class="view_articles"><a href="freeboard">목록</a></div>
     <div class="write_article"><a href="freeboard/write">글쓰기</a></div>
 </div>
 
-<div class="bbs_pagination">
-    여기에 페이징
+<div class="">
+    <div class="pagination pagination-small pagination-centered">
+        <ul>
+            <li class="disabled"><span>«</span></li>
+            <li><a href="freeboard/lists/1">1</a></li>
+            <li class="active"><span>2</span></li>
+            <li><a href="freeboard/lists/3">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li><a href="#">6</a></li>
+            <li><a href="#">7</a></li>
+            <li><a href="#">8</a></li>
+            <li><a href="#">9</a></li>
+            <li><a href="#">»</a></li>
+        </ul>
+    </div>
 </div>
 
 <div class="bbs_search">
-    여기에 검색바
+    <select style="width:80px;">
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+        <option>5</option>
+    </select>
+    
+    <form class="form-search">
+        <div class="input-append">
+            <input type="text" class="span2 search-query">
+            <button type="submit" class="btn">Search</button>
+        </div
+    </form>
+
 </div>
 
 <!-- (e) freeboard -->

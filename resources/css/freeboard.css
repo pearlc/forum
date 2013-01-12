@@ -28,6 +28,12 @@ div.bbs_header {
     margin:10px 0px;
 }
 
+div.no_articles {
+    text-align:center;
+    vertical-align: middle;
+    margin:30px auto;
+}
+
 .comments_count {
     color: gray;
 }
@@ -44,10 +50,8 @@ div.bbs_header {
     float:right;
 }
 
-.bbs_pagination {
-    margin:0 auto;
-    width:300px;
-    text-align:center;
+.wrap_pagination {
+    text-align: center;
 }
 
 .bbs_search{

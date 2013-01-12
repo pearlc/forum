@@ -4,6 +4,11 @@ class Freeboard extends CI_Controller {
 
     public function index()
     {
+        $this->lists();
+    }
+    
+    public function lists($page = 1)
+    {
         $data = array();
         $data['main_content'] = 'freeboard/freeboard';
         
