@@ -562,7 +562,7 @@ class Account extends CI_Controller {
         $method_name = $this->uri->segment(2);
         
         $javascripts = array(
-            'account.js',
+            'account',
         );
         return $javascripts;
     }
@@ -572,7 +572,7 @@ class Account extends CI_Controller {
         $method_name = $this->uri->segment(2);
         
         $csses = array(
-            'account.css',
+            'account',
         );
         return $csses;
     }

@@ -24,7 +24,7 @@ if ( !isset($data) ) $data = array();
             <?php $this->load->view('includes/left_bar_nav_tabs.php'); ?>
         </div>
         <div class="span10">
-            <?php $this->load->view($main_content); ?>
+            <?php $this->load->view($main_content, $data); ?>
         </div>
         <?
         

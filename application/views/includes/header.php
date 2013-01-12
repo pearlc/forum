@@ -16,13 +16,13 @@ $csses = $ci->csses();
         <link href="resources/css/my-custom.css" rel="stylesheet" />
         <link href="resources/css/wiki.css" rel="stylesheet" />
         <?php foreach($csses as $k => $v) { ?>
-            <link href="resources/css/<?=$v?>" rel="stylesheet" />
+            <link href="resources/css/<?=$v.'.css'?>" rel="stylesheet" />
         <?}?>
 
         <script src="resources/js/jquery-1.8.3.min.js" type="text/javascript" ></script>
         <script src="resources/js/bootstrap.js" type="text/javascript"></script>
         <?php foreach($javascripts as $k => $v) { ?>
-            <script src="resources/js/<?=$v?>" type="text/javascript"></script>
+            <script src="resources/js/<?=$v.'.js'?>" type="text/javascript"></script>
         <?}?>
 
         <title><?=$this->lang->line('common_site_title');?></title>

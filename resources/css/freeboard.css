@@ -1,0 +1,57 @@
+/* 
+    Document   : freeboard
+    Created on : 2013. 1. 10, 오후 11:36:31
+    Author     : pearlc
+    Description:
+        Purpose of the stylesheet follows.
+
+    TODO : bbs (게시판 공통) 인 부분과 freeboard (자유게시판 특화) 부분 분리도 고려할것
+*/
+
+root { 
+    display: block;
+}
+
+table#bbs_articles {
+    width:100%;
+    text-align: center;
+}
+
+td.title {
+    text-align: left;
+}
+
+div.bbs_header {
+    background-color:#ecedff;
+    height:70px;
+    padding:10px;
+    margin:10px 0px;
+}
+
+.comments_count {
+    color: gray;
+}
+
+.bbs_menu {
+    margin:0 auto;
+    text-align:center;
+}
+
+.bbs_menu div.view_articles {
+    float:left;
+}
+.bbs_menu div.write_article {
+    float:right;
+}
+
+.bbs_pagination {
+    margin:0 auto;
+    width:300px;
+    text-align:center;
+}
+
+.bbs_search{
+    margin:0 auto;
+    width:500px;
+    text-align:center;
+}
