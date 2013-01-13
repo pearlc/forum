@@ -35,6 +35,44 @@ class Freeboard extends CI_Controller {
     
     public function write()
     {
+        // 로그인 되어있지 않다면 lists 화면으로
+        // 
+        // TODO : 나중에 자바스크립트로 처리
+        
+        
+        
+        if ( !$this->tank_auth->is_logged_in() ) {
+            redirect('freeboard');
+        } elseif ($this->tank_auth->is_logged_in(FALSE)) {      // logged in, not activated
+            redirect('/account/send_again/');
+        }
+        
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('title', '', 'trim|required|xss_clean');
+        $this->form_validation->set_rules('ckeditor', '', 'trim|required|xss_clean');
+        
+        if ( $this->form_validation->run() ) {
+            
+            // 데이터 구성하고 insert
+            $now = date('Y-m-d H:i:s');
+            $data = array(
+                'title' => $this->input->post('title'),
+                'user_id' => $this->session->userdata('user_id'),
+                'username' => $this->session->userdata('username'),
+                'ip' => $this->input->ip_address(),
+                'content' =>  $this->input->post('ckeditor'),
+                'created'=> $now,
+                'modified' => $now,
+            );
+            
+            $this->db->insert('freeboard_articles', $data);
+            $result = $this->db->insert_id();
+            // insert 된 id 획득
+            
+            // 해당 게시글로 redirect
+            redirect('freeboard/view/'.$result);
+        }
+        
         $data = array();
         $data['main_content'] = 'freeboard/write';
         
@@ -51,7 +89,15 @@ class Freeboard extends CI_Controller {
     }
     
     public function javascripts() {
-        return array('freeboard');
+        
+        $js = array('freeboard');
+        
+        if ($this->uri->segment(2) == 'write') {
+            $js[] = 'ckeditor/ckeditor';
+        }
+        
+        
+        return $js;
     }
     
     public function csses() {

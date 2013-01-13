@@ -62,3 +62,27 @@ div.no_articles {
 .bbs_search select {
     width:80px;
 }
+
+div.wrap_editor input[type=text] {
+    width:908px;
+}
+div.wrap_editor input[type=submit] {
+    float:right;
+    width:80px;
+}
+
+div.wrap_editor dl {
+    height:31px;
+}
+
+div.wrap_editor dt {
+    float:left;
+    padding-top:3px;
+    margin-top:10px;
+}
+
+div.wrap_editor dd {
+    float:right;
+    width:95%;
+    margin-top:10px;
+}
