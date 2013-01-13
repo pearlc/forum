@@ -33,6 +33,14 @@ class Freeboard extends CI_Controller {
         $this->load->view('template', $data);
     }
     
+    public function write()
+    {
+        $data = array();
+        $data['main_content'] = 'freeboard/write';
+        
+        $this->load->view('template', $data);
+    }
+    
     // 이하 CI_ViewDelegate 메서드
     public function show_sidebar() {
         return true;

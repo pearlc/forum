@@ -54,8 +54,11 @@ div.no_articles {
     text-align: center;
 }
 
-.bbs_search{
+.bbs_search {
     margin:0 auto;
-    width:500px;
     text-align:center;
+}
+
+.bbs_search select {
+    width:80px;
 }

@@ -92,19 +92,19 @@ if ( count($rows)==0 ) {
 </div>
 
 <div class="bbs_search">
-    <select style="width:80px;">
-        <option>1</option>
-        <option>2</option>
-        <option>3</option>
-        <option>4</option>
-        <option>5</option>
-    </select>
-    
     <form class="form-search">
+        <select>
+            <option>1</option>
+            <option>2</option>
+            <option>123451234512345</option>
+            <option>4</option>
+            <option>5</option>
+        </select>
+    
         <div class="input-append">
             <input type="text" class="span2 search-query">
             <button type="submit" class="btn">Search</button>
-        </div
+        </div>
     </form>
 
 </div>
