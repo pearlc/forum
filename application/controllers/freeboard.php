@@ -14,8 +14,7 @@ class Freeboard extends CI_Controller {
         
         // (s) db 접근후 제목만 뿌려보자
         $this->db->order_by('id', 'desc');
-        $this->db->limit(10,0);  // 첫번째 파라미터가 limit, 두번째 파라미터가 offset
-        $query = $this->db->get('freeboard_articles');
+        $query = $this->db->get_where('freeboard_articles', array('deleted' => 0), 10, 0);
         $data['data']['rows'] = $query->result();
         // (e) db 접근후 제목만 뿌려보자
         
@@ -77,6 +76,28 @@ class Freeboard extends CI_Controller {
         $data['main_content'] = 'freeboard/write';
         
         $this->load->view('template', $data);
+    }
+    
+    public function edit($article_id = 0)
+    {
+        if ( $article_id == 0 ) {
+            redirect('freeboard');
+        }
+        
+        $data = array(
+            'id' => $article_id,
+            'user_id' => $this->session->userdata('user_id'),
+        );
+        // 여기할차례
+        
+        // 해당되는 게시글이 없다면 redirect
+        
+        
+        // TODO : 삭제된 게시물이라면 알림 메시지
+        
+        // edit
+        
+        
     }
     
     // 이하 CI_ViewDelegate 메서드

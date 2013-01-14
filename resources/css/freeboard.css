@@ -86,3 +86,29 @@ div.wrap_editor dd {
     width:95%;
     margin-top:10px;
 }
+
+div.article_title {
+    
+}
+
+div.article_meta {
+    margin:10px 0px 30px 0px;
+    height:20px;
+}
+
+span.article_username {
+    float:left;
+}
+
+span.article_date {
+    float:right;
+}
+
+span.article_menu {
+    float:right;
+    margin-right:10px;
+}
+
+div.article_content {
+    clear:both;
+}
