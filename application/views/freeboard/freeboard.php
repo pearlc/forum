@@ -48,7 +48,7 @@
                 </span>
             </td>
             <td><?=$row->username?></td><!-- TODO : javascript 링크 붙이기 -->
-            <td><?=$row->created?></td> <!-- TODO : 적절한 date foramt 으로 바꿔야함 -->
+            <td><?=$row->modified?></td> <!-- TODO : 적절한 date foramt 으로 바꿔야함 -->
             <td><?=$row->hit?></td>
         </tr>
         <?
@@ -60,7 +60,7 @@
 <?php
 if ( count($rows)==0 ) {
     ?>
-    <div class="no_articles">
+    <div class="bbs_message">
         게시글이 없습니다
     </div>
 <?
@@ -86,14 +86,18 @@ if ( count($rows)==0 ) {
             <li><a href="#">7</a></li>
             <li><a href="#">8</a></li>
             <li><a href="#">9</a></li>
+            <li><a href="#">10</a></li>
             <li><a href="#">»</a></li>
         </ul>
     </div>
 </div>
 
 <div class="bbs_search">
+    <?
+    // get 방식으로 보내기 위해 form_open을 사용하지 않음
+    ?>
     <form class="form-search">
-        <select>
+        <select name="">
             <option>1</option>
             <option>2</option>
             <option>123451234512345</option>
@@ -102,7 +106,7 @@ if ( count($rows)==0 ) {
         </select>
     
         <div class="input-append">
-            <input type="text" class="span2 search-query">
+            <input type="text" name="search" class="span2 search-query">
             <button type="submit" class="btn">Search</button>
         </div>
     </form>

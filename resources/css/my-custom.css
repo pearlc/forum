@@ -1,43 +1,64 @@
 @CHARSET "UTF-8";
 
+/*!
+ * Bootstrap 이외에 global 하게 적용될 style
+ *
+ */
 
 .my-hero-unit {
-	padding: 6px 60px;
-	margin: 10px 0px;
-	font-size: 16px;
-	font-weight: 200;
-	line-height: 30px;
-	color: inherit;
-	background-color: #eeeeee;
-	-webkit-border-radius: 8px;
-	-moz-border-radius: 8px;
-	border-radius: 8px;
+    padding: 6px 60px;
+    margin: 10px 0px;
+    font-size: 16px;
+    font-weight: 200;
+    line-height: 30px;
+    color: inherit;
+    background-color: #eeeeee;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
 }
 
 
 .my-hero-unit h1 {
-	margin-bottom: 0;
-	font-size: 24px;
-	line-height: 1;
-	letter-spacing: -1px;
-	color: inherit;
+    margin-bottom: 0;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: -1px;
+    color: inherit;
 }
 
 .nav-tabs > .active > a,
 .nav-tabs > .active > a:hover {
-	color: #ffffff;
-	background-color: #0088cc;
+    color: #ffffff;
+    background-color: #0088cc;
 }
 
 .user-info {
-	margin:10px 0;
-	padding:8px 4px 0px 4px;
-	border:1px solid #DDD;
-	-webkit-border-radius: 8px;	
-	-moz-border-radius: 8px;
-	border-radius: 8px;
+    margin:10px 0;
+    padding:8px 4px 0px 4px;
+    border:1px solid #DDD;
+    -webkit-border-radius: 8px;	
+    -moz-border-radius: 8px;
+    border-radius: 8px;
 }
 
 .user-info input {
-	max-width:146px;
+    max-width:146px;
+}
+
+p,
+.cke_editable p {
+    margin-top:0px;
+    margin-bottom:0px;
+    line-height: 22px;  /* TODO : bootstrap Customizing에서 @baseLineHeight 를 20->22px 로 고친 후에는 이줄 없앨것 */
+}
+
+ol, ul {
+    margin-top:0px;
+    margin-bottom:0px;
+    line-height: 22px;  /* TODO : bootstrap Customizing에서 @baseLineHeight 를 20->22px 로 고친 후에는 이줄 없앨것 */
+}
+
+.cke_editable p {
+    
 }

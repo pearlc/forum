@@ -15,7 +15,7 @@
     if ( $this->session->userdata('user_id') == $article->user_id ) {
         ?>
     <span class="article_menu">
-        <a href="freeboard/edit/<?=$article->id?>">수정</a> <a href="freeboard/delete/<?=$article->id?>">삭제</a>
+        <a href="freeboard/edit/<?=$article->id?>">수정</a> | <a href="freeboard/delete/<?=$article->id?>">삭제</a>
     </span>
     <?
     }

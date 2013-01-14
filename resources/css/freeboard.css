@@ -28,7 +28,7 @@ div.bbs_header {
     margin:10px 0px;
 }
 
-div.no_articles {
+div.bbs_message {
     text-align:center;
     vertical-align: middle;
     margin:30px auto;
@@ -111,4 +111,5 @@ span.article_menu {
 
 div.article_content {
     clear:both;
+    border:1px solid lightgray;
 }

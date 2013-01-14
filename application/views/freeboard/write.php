@@ -9,13 +9,13 @@
         <dl>
             <dt>제목</dt>
             <dd>
-                <input type="text" name="title" />
+                <input type="text" name="title" value="<?=$title?>" />
             </dd>
         </dl>
         <dl>
             <dt>내용</dt>
             <dd>
-                <textarea name="ckeditor"></textarea>
+                <textarea name="ckeditor"><?=$content?></textarea>
                 <script>
                     CKEDITOR.replace( 'ckeditor' );
                 </script>
