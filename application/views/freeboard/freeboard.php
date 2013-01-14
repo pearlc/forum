@@ -76,18 +76,90 @@ if ( count($rows)==0 ) {
 <div class="">
     <div class="pagination pagination-small pagination-centered">
         <ul>
-            <li class="disabled"><span>«</span></li>
-            <li><a href="freeboard/lists/1">1</a></li>
-            <li class="active"><span>2</span></li>
-            <li><a href="freeboard/lists/3">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li><a href="#">6</a></li>
-            <li><a href="#">7</a></li>
-            <li><a href="#">8</a></li>
-            <li><a href="#">9</a></li>
-            <li><a href="#">10</a></li>
-            <li><a href="#">»</a></li>
+            <?php
+            /**
+             * Delegation Pattern 으로 구현...? => 그냥 막코딩 하는게 나을수도.. 하지만 어떤식으로든 정리가 필요해 보임;;
+             * 
+             * 필요한것
+             * 
+             * 현재page : get으로 얻을수 있음
+             * 해당하는 articles 의 개수 : 이게 중요. 컨트롤러에서 넘겨받아야함.
+             * 현재 pagination의 첫번째 페이지 : 현재 page 에서 잘 버무리면 나옴
+             * 현재 pagination의 마지막 페이지 : 현재 page 에서 잘 버무리면 나옴
+             * 현재 해당하는 articles 의 마지막 페이지 : 10의 단위로 잘끊어야함
+             * 
+             * 검색 keyword
+             * 검색 옵션
+             * 
+             * 
+             * 
+             * array(
+             *  'articles_count',
+             *  'end_page',
+             *  'keyword',
+             *  'options',
+             * );
+             * 
+             * 
+             * 
+             * http_build_query() 함수 사용하면 보기 좋을듯
+             * 
+             */
+            
+            // 이것들은 controller로부터 넘겨받은 값 또는 상수.
+            // articles_per_page 는 게시판 성격마다 달라질수도 있기때문에 delegation pattern 으로 뽑아내는것도 괜찮을듯
+            $articles_count = 31;
+            $articles_per_page = 10;
+            $pages_in_pagination = 10;
+            
+            
+            
+            $page = $this->input->get('page');
+            if ( !$page ) {
+                $page = 1;
+            }
+            $leftest_page = intval($page / $pages_in_pagination) + 1;
+            $rightest_page = intval($page / $pages_in_pagination) + 10;
+            $last_page = intval( $articles_count / $articles_per_page ) + ($articles_count%$articles_per_page?1:0);   // 남는 페이지가 있으면 1을 더함 : 맞나??
+            if ($rightest_page > $last_page) $rightest_page = $last_page;
+            
+            $query_string = '';
+            $keyword = $this->input->get('keyword');
+            $so = $this->input->get('so');
+            if ( $keyword ) {
+                $query_string .= 'keyword='.$keyword;
+                $query_string .= '&so='.$so;
+                $query_string .= '&';
+            }
+            $query_string .= 'page=';
+            
+            ?>
+            
+            <?php
+            if ( $leftest_page >= 11 ) {
+                ?><li><a href="freeboard?<?=$query_string.($leftest_page - 10 )?>">«</a></li><?
+            }
+            
+            for ( $i = $leftest_page ; $i <= $rightest_page ; $i++ ) {
+                if ( $page == $i ) {
+                    ?>
+                    <li class="active">
+                        <span><?=$i?></span>
+                    </li>
+                    <?
+                } else {
+                    ?>
+                    <li>
+                        <a href="freeboard?<?=$query_string.$i?>"><?=$i?></a>
+                    </li>
+                    <?
+                }
+            }
+            
+            if ( $rightest_page < $last_page ) {
+                ?><li><a href="freeboard?<?=$query_string.($leftest_page + 10)?>">»</a></li><?
+            }
+            ?>
         </ul>
     </div>
 </div>
@@ -97,7 +169,7 @@ if ( count($rows)==0 ) {
     // get 방식으로 보내기 위해 form_open을 사용하지 않음
     ?>
     <form class="form-search">
-        <select name="">
+        <select name="so">
             <option>1</option>
             <option>2</option>
             <option>123451234512345</option>
@@ -106,7 +178,7 @@ if ( count($rows)==0 ) {
         </select>
     
         <div class="input-append">
-            <input type="text" name="search" class="span2 search-query">
+            <input type="text" name="keyword" class="span2 search-query">
             <button type="submit" class="btn">Search</button>
         </div>
     </form>
