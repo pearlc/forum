@@ -77,16 +77,20 @@ if ( count($rows)==0 ) {
     <div class="pagination pagination-small pagination-centered">
         <ul>
             <?php
+            
             /**
              * Delegation Pattern 으로 구현...? => 그냥 막코딩 하는게 나을수도.. 하지만 어떤식으로든 정리가 필요해 보임;;
              * 
-             * 필요한것
              * 
-             * 현재page : get으로 얻을수 있음
-             * 해당하는 articles 의 개수 : 이게 중요. 컨트롤러에서 넘겨받아야함.
-             * 현재 pagination의 첫번째 페이지 : 현재 page 에서 잘 버무리면 나옴
-             * 현재 pagination의 마지막 페이지 : 현재 page 에서 잘 버무리면 나옴
-             * 현재 해당하는 articles 의 마지막 페이지 : 10의 단위로 잘끊어야함
+             * pagination ligrary의 input
+             *  - 현재page : get으로 얻을수 있음
+             *  - 해당하는 articles 의 개수 : 이게 중요. 컨트롤러에서 넘겨받아야함.
+             *  - 유지해야하는 k-v 쌍 ( 검색 keyword, 검색 옵션 )
+             * 
+             * pagination library의 output
+             *  - 현재 pagination의 첫번째 페이지 : 현재 page 에서 잘 버무리면 나옴
+             *  - 현재 pagination의 마지막 페이지 : 현재 page 에서 잘 버무리면 나옴
+             *  - 현재 해당하는 articles 의 마지막 페이지 : 10의 단위로 잘끊어야함
              * 
              * 검색 keyword
              * 검색 옵션
@@ -104,6 +108,8 @@ if ( count($rows)==0 ) {
              * 
              * http_build_query() 함수 사용하면 보기 좋을듯
              * 
+             * 
+             * 
              */
             
             // 이것들은 controller로부터 넘겨받은 값 또는 상수.
@@ -115,29 +121,28 @@ if ( count($rows)==0 ) {
             
             
             $page = $this->input->get('page');
-            if ( !$page ) {
+            if ( !$page || !is_int($page) ) {
                 $page = 1;
             }
-            $leftest_page = intval($page / $pages_in_pagination) + 1;
-            $rightest_page = intval($page / $pages_in_pagination) + 10;
-            $last_page = intval( $articles_count / $articles_per_page ) + ($articles_count%$articles_per_page?1:0);   // 남는 페이지가 있으면 1을 더함 : 맞나??
-            if ($rightest_page > $last_page) $rightest_page = $last_page;
+            $leftest_page = intval( $page / $pages_in_pagination ) + 1;
+            $rightest_page = intval( $page / $pages_in_pagination ) + 10;
+            $last_page = intval( $articles_count / $articles_per_page ) + ( $articles_count%$articles_per_page?1:0 );   // 남는 페이지가 있으면 1을 더함 : 맞나??
+            if ( $rightest_page > $last_page ) $rightest_page = $last_page;
             
-            $query_string = '';
+            $prefix_query_string = '';
             $keyword = $this->input->get('keyword');
             $so = $this->input->get('so');
             if ( $keyword ) {
-                $query_string .= 'keyword='.$keyword;
-                $query_string .= '&so='.$so;
-                $query_string .= '&';
+                $prefix_query_string .= 'keyword='.$keyword;
+                $prefix_query_string .= '&so='.$so;
+                $prefix_query_string .= '&';
             }
-            $query_string .= 'page=';
             
             ?>
             
             <?php
             if ( $leftest_page >= 11 ) {
-                ?><li><a href="freeboard?<?=$query_string.($leftest_page - 10 )?>">«</a></li><?
+                ?><li><a href="freeboard?<?=$prefix_query_string.'page='.($leftest_page - 10 )?>">«</a></li><?
             }
             
             for ( $i = $leftest_page ; $i <= $rightest_page ; $i++ ) {
