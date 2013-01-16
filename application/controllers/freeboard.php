@@ -9,13 +9,25 @@ class Freeboard extends CI_Controller {
     
     public function lists()
     {
-        $data = array();
-        $data['main_content'] = 'freeboard/freeboard';
-        
         // (s) db 접근후 제목만 뿌려보자
         $this->db->order_by('id', 'desc');
         $query = $this->db->get_where('freeboard_articles', array('deleted' => 0), 10, 0);
-        $data['data']['rows'] = $query->result();
+        $rows = $query->result();
+        
+        $this->load->library('pagination');
+        $this->pagination->options_set (33, $this->input->get('page'));
+        
+        // count
+        $where_set = array(
+            'deleted' => 0,
+        );
+        $this->db->where($where_set);
+        $this->db->from('freeboard_articles');
+        echo $this->db->count_all_results();
+        
+        $data = array();
+        $data['main_content'] = 'freeboard/freeboard';
+        $data['data']['rows'] = $rows;
         // (e) db 접근후 제목만 뿌려보자
         
         $this->load->view('template', $data);

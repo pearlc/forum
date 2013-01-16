@@ -83,17 +83,16 @@ if ( count($rows)==0 ) {
              * 
              * 
              * pagination ligrary의 input
-             *  - 현재page : get으로 얻을수 있음
              *  - 해당하는 articles 의 개수 : 이게 중요. 컨트롤러에서 넘겨받아야함.
-             *  - 유지해야하는 k-v 쌍 ( 검색 keyword, 검색 옵션 )
+             *  - 현재page : get으로 얻을수 있음. 굳이 안그래도 되지만 이것도 컨트롤러에서 넘겨받는게 좋을듯
+             *  - 유지해야하는 k-v 쌍 ( 검색 keyword, 검색 옵션 ). 굳이 안그래도 되지만 이것도 컨트롤러에서 넘겨받는게 좋을듯
              * 
              * pagination library의 output
              *  - 현재 pagination의 첫번째 페이지 : 현재 page 에서 잘 버무리면 나옴
              *  - 현재 pagination의 마지막 페이지 : 현재 page 에서 잘 버무리면 나옴
-             *  - 현재 해당하는 articles 의 마지막 페이지 : 10의 단위로 잘끊어야함
+             *  - 현재 해당하는 articles 들의 마지막 페이지 : 10의 단위로 잘끊어야함
+             *  - prefix_query_string
              * 
-             * 검색 keyword
-             * 검색 옵션
              * 
              * 
              * 
@@ -114,6 +113,8 @@ if ( count($rows)==0 ) {
             
             // 이것들은 controller로부터 넘겨받은 값 또는 상수.
             // articles_per_page 는 게시판 성격마다 달라질수도 있기때문에 delegation pattern 으로 뽑아내는것도 괜찮을듯
+            
+            /*
             $articles_count = 31;
             $articles_per_page = 10;
             $pages_in_pagination = 10;
@@ -137,16 +138,20 @@ if ( count($rows)==0 ) {
                 $prefix_query_string .= '&so='.$so;
                 $prefix_query_string .= '&';
             }
+            */
             
-            ?>
+            $current_page = $this->pagination->get_current_page();
+            $leftest_page = $this->pagination->get_leftest_page();
+            $rightest_page = $this->pagination->get_rightest_page();
+            $last_page = $this->pagination->get_last_page();
+            $query_string_prefix = $this->pagination->get_query_string_prefix();
             
-            <?php
             if ( $leftest_page >= 11 ) {
-                ?><li><a href="freeboard?<?=$prefix_query_string.'page='.($leftest_page - 10 )?>">«</a></li><?
+                ?><li><a href="freeboard?<?=$query_string_prefix.'&page='.($leftest_page - 10 )?>">«</a></li><?
             }
             
             for ( $i = $leftest_page ; $i <= $rightest_page ; $i++ ) {
-                if ( $page == $i ) {
+                if ( $current_page == $i ) {
                     ?>
                     <li class="active">
                         <span><?=$i?></span>
@@ -155,14 +160,14 @@ if ( count($rows)==0 ) {
                 } else {
                     ?>
                     <li>
-                        <a href="freeboard?<?=$query_string.$i?>"><?=$i?></a>
+                        <a href="freeboard?<?=$query_string_prefix.'&page='.$i?>"><?=$i?></a>
                     </li>
                     <?
                 }
             }
             
             if ( $rightest_page < $last_page ) {
-                ?><li><a href="freeboard?<?=$query_string.($leftest_page + 10)?>">»</a></li><?
+                ?><li><a href="freeboard?<?=$query_string_prefix.'&page='.($leftest_page + 10)?>">»</a></li><?
             }
             ?>
         </ul>
