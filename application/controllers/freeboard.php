@@ -1,34 +1,66 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Freeboard extends CI_Controller {
-
+    
+    public function __construct() {
+        parent::__construct();
+        
+        $this->load->library('pagination');
+    }
+    
     public function index()
     {
         $this->lists();
     }
     
+    /**
+     * 게시글 목록
+     * 검색어 유무 상관없이 모두 이 함수를 이용
+     */
     public function lists()
     {
-        // (s) db 접근후 제목만 뿌려보자
-        $this->db->order_by('id', 'desc');
-        $query = $this->db->get_where('freeboard_articles', array('deleted' => 0), 10, 0);
-        $rows = $query->result();
+        $articles_per_page = $this->pagination->get_articles_per_page();
+        $current_page = $this->pagination->get_current_page();
         
-        $this->load->library('pagination');
-        $this->pagination->options_set (33, $this->input->get('page'));
-        
-        // count
+        // where 조건절
         $where_set = array(
             'deleted' => 0,
         );
+        
+        // 검색 조건절
+        $like_set = array();
+        if ( $this->input->get('so') && $this->input->get('keyword') ) {
+            if ( $this->input->get('so') == 'search_username' ) {
+                $search_key = 'username';
+            } else if ( $this->input->get('so') == 'search_title' ) {
+                $search_key = 'title';
+            } else if ( $this->input->get('so') == 'search_content' ) {
+                $search_key = 'content';
+            }
+            $like_set[$search_key] = $this->input->get('keyword');
+        }
+        
+        // 현재 페이지 게시글들 select
+        $this->db->order_by('id', 'desc');
+        $this->db->like($like_set);
+        $query = $this->db->get_where(
+            'freeboard_articles', 
+            $where_set, 
+            $articles_per_page , 
+            ($current_page - 1) * $articles_per_page
+        );
+        $rows = $query->result();
+        
+        // articles count
+        $this->db->like($like_set);
         $this->db->where($where_set);
         $this->db->from('freeboard_articles');
-        echo $this->db->count_all_results();
+        $articles_count = $this->db->count_all_results();
+        $this->pagination->set_articles_count( $articles_count );
         
         $data = array();
-        $data['main_content'] = 'freeboard/freeboard';
+        $data['main_content'] = 'freeboard/lists';
         $data['data']['rows'] = $rows;
-        // (e) db 접근후 제목만 뿌려보자
         
         $this->load->view('template', $data);
     }

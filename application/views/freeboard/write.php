@@ -1,4 +1,8 @@
 <!-- (s) freeboard -->
+<?php
+if ( !isset($title) ) $title = '';
+if ( !isset($content) ) $content = '';
+?>
 
 <div class="board_header">
     <h4><a href="freeboard/"><?=$this->lang->line('common_label_freeboard');?></a></h4>
