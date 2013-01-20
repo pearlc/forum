@@ -6,6 +6,12 @@ class Freeboard extends CI_Controller {
         parent::__construct();
         
         $this->load->library('pagination');
+        $this->load->model('freeboard_article');
+    }
+    
+    public function test()
+    {
+        
     }
     
     public function index()
@@ -76,6 +82,7 @@ class Freeboard extends CI_Controller {
         );
         
         $articles = $this->db->get_where('freeboard_articles', $where_set, 1)->result();
+//        $article = $this->freeboard_article->get( $where_set );
         
         // 해당 게시글이 존재하지 않으면 redirect
         if ( count($articles) == 0 ) {
